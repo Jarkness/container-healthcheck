@@ -1,15 +1,23 @@
 # container-healthcheck
 Microservice that returns info about docker containers on host.
 RESTful JSON API.
-For docker container deployment, needs the access to the docker socket via volume.
+For a docker container deployment, needs the access to the docker socket via volume.
 How to run:
 
-'''bash
+```bash
+docker build . -t container_health
 docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 80:80 --name container_health container_health
-'''
+```
+
+Then test it using curl:
+```bash
+curl -k http://localhost/health
+```
+
+------------
 
 Example response on /health: 
-'''json
+```json
 [
     {
         "Id": "86a62fbc15998eb756ce4b4cde71a2a9cf2740b255db0247a5fcf66d51838ce0",
@@ -65,4 +73,4 @@ Example response on /health:
         ]
     }
 ]
-'''
+```
