@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -17,7 +18,7 @@ func get_container_healthz(w http.ResponseWriter, r *http.Request) {
 
 	containers, err := docker_client.ContainerList(context.Background(), types.ContainerListOptions{})
 	if err != nil {
-		http.Error(w, "Unable to fetch container list", http.StatusInternalServerError)
+		http.Error(w, "Unable to fetch container list: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -26,6 +27,7 @@ func get_container_healthz(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/healthz", get_container_healthz)
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	fmt.Printf("Starting container info service")
+	http.HandleFunc("/health", get_container_healthz)
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
