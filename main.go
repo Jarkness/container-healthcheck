@@ -15,6 +15,7 @@ var docker_client, _ = client.NewClientWithOpts(client.FromEnv)
 
 func get_container_healthz(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	containers, err := docker_client.ContainerList(context.Background(), types.ContainerListOptions{})
 	if err != nil {
